@@ -1,0 +1,4 @@
+*__pycache__*
+*.pyc
+data/
+db_config.py
