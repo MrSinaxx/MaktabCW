@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post, Author
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Author, Comment
+from .forms import CommentForm
 
 
 def home(request):
@@ -15,7 +16,21 @@ def all_posts(request):
 
 def post_details(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, "post_details.html", {"post": post})
+    comments = Comment.objects.filter(post=post)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect("post_details", pk=pk)
+    else:
+        form = CommentForm()
+
+    return render(
+        request, "post_details.html", {"post": post, "comments": comments, "form": form}
+    )
 
 
 def author_list(request):

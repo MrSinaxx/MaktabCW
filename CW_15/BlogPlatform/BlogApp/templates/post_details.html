@@ -6,9 +6,32 @@
             <div class="card-body">
                 <h1 class="card-title">{{ post.title }}</h1>
                 <p class="card-text">{{ post.content }}</p>
-                <p class="card-text">Author: {{ post.author }}</p>
+                <p class="card-text">Author: <a href="{% url 'author_details' post.author.pk %}">{{ post.author }}</a></p>
                 <p class="card-text">Publication Date: {{ post.publication_date }}</p>
+                <p class="card-text">Category: <a href="{% url 'category_details' post.category.pk %}">{{ post.category.name }}</a></p>
             </div>
         </div>
+
+        <h2>Comments</h2>
+        <ul class="list-group">
+            {% for comment in comments %}
+                <li class="list-group-item">
+                    <p class="mb-1">{{ comment.content }}</p>
+                    <small>By {{ comment.author }} - {{ comment.date }}</small>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No comments yet.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Add a Comment</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+
     </div>
 {% endblock %}
