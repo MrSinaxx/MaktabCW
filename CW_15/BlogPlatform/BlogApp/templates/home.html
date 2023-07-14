@@ -1,13 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to the Blog Platform</h1>
-        <p class="lead">Explore the latest posts, categories, and authors.</p>
-        <hr class="my-4">
-        <p>Get started by discovering insightful articles and engaging content.</p>
-        <a class="btn btn-primary btn-lg" href="/posts" role="button">View Posts</a>
-        <a class="btn btn-secondary btn-lg" href="/categories" role="button">View Categories</a>
-        <a class="btn btn-info btn-lg" href="/authors" role="button">View Authors</a>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Welcome to the Blog Platform</h1>
+            <p class="lead">Explore the latest posts, categories, and authors.</p>
+        </div>
     </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            {% for post in posts %}
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.content }}</p>
+                            <p class="card-text">Author: <a href="{% url 'author_details' post.author.pk %}">{{ post.author }}</a></p>
+                            <p class="card-text">Publication Date: {{ post.publication_date }}</p>
+                            <a href="{% url 'post_details' post.pk %}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .jumbotron {
+            background-image: linear-gradient(to bottom right, #ff4e00, #ec2f4b);
+            color: #fff;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
 {% endblock %}
