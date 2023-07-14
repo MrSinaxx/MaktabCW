@@ -2,22 +2,18 @@
 
 {% block content %}
     <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <h1 class="card-title">{{ author.name }}</h1>
-                <p class="card-text">{{ author.bio }}</p>
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ author.image.url }}" class="img-fluid rounded-start" alt="{{ author.name }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ author.name }}</h1>
+                        <p class="card-text">{{ author.bio }}</p>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <h2 class="mt-4">Posts by {{ author.name }}</h2>
-        {% if posts %}
-            <ul class="list-group">
-                {% for post in posts %}
-                    <li class="list-group-item">{{ post.title }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No posts found for this author.</p>
-        {% endif %}
     </div>
 {% endblock %}

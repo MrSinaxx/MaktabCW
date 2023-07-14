@@ -2,13 +2,22 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="mb-4">All Authors</h1>
-        <ul class="list-group">
+        <div class="row">
             {% for author in authors %}
-                <li class="list-group-item">
-                    <a href="{% url 'author_details' author.pk %}">{{ author.name }}</a>
-                </li>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            {% if author.image %}
+                                <img src="{{ author.image.url }}" alt="{{ author.name }}" class="rounded-circle img-fluid">
+                          
+                            {% endif %}
+                            <h5 class="card-title mt-3">{{ author.name }}</h5>
+                            <p class="card-text">{{ author.bio }}</p>
+                            <a href="{% url 'author_details' author.pk %}" class="btn btn-primary">View Profile</a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 {% endblock %}
