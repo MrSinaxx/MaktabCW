@@ -8,5 +8,16 @@
                 <p class="card-text">{{ author.bio }}</p>
             </div>
         </div>
+
+        <h2 class="mt-4">Posts by {{ author.name }}</h2>
+        {% if posts %}
+            <ul class="list-group">
+                {% for post in posts %}
+                    <li class="list-group-item">{{ post.title }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts found for this author.</p>
+        {% endif %}
     </div>
 {% endblock %}
