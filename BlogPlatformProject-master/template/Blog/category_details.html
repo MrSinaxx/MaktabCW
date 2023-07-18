@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>All Posts</title>
+{% endblock title %}
+{% block content %}
+    <!-- Category -->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h2 class="post-title">{{ category.name }}</h2>
+                    <p>{{ category.description }}</p>
+                </div>
+            </div>
+        </div>
+    </article>
+    <!-- Divider -->
+    <hr class="my-4" />
+    <!-- Posts of category -->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                {% for post in category.post_set.all %}
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-preview">
+                            <h2 class="post-title">{{ post.title }}</h2>
+                            <p>{{ post.content }}</p>
+                        </div>
+                        <hr class="my-4" />
+                    </div>
+                {% empty %}
+                    <p>No posts found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+    <!-- Form Post -->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <form class="row gx-4 gx-lg-5 justify-content-center" method="POST" action="{% url 'create_post' category.id %}">
+                {% csrf_token %}
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="form-group">
+                        <label for="post_title">Post Title</label>
+                        <input type="text" class="form-control" id="post_title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="post_content">Post Content</label>
+                        <textarea class="form-control" id="post_content" name="content" rows="4" required></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Create Post</button>
+                </div>
+            </form>
+        </div>
+    </article>
+{% endblock content %}
