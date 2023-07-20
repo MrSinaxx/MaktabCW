@@ -71,7 +71,7 @@ def create_category(request):
 def create_post(request, pk):
     category = Category.objects.get(id=pk)
     if request.method == "POST":
-        author = Author.objects.get(id=1)  # Replace with the actual author
+        author = Author.objects.get(id=1)
         title = request.POST.get("title")
         content = request.POST.get("content")
         post = Post(title=title, content=content, category=category, author=author)

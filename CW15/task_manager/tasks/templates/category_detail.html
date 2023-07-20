@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <style>
+      .category-details {
+        background-color: rgba(255, 255, 255, 0.06);
+        border: 2px solid #464C5C;
+        border-radius: 6px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .category-details h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .category-details p {
+        font-size: 16px;
+      }
+
+      .create-task-form {
+        background-color: rgba(255, 255, 255, 0.06);
+        border: 2px solid #464C5C;
+        border-radius: 6px;
+        padding: 20px;
+      }
+
+      .create-task-form h3 {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .create-task-form label {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .create-task-form .form-control {
+        width: 100%;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.06);
+        border: 1px solid #464C5C;
+        border-radius: 4px;
+        color: #FFFFFF;
+        font-size: 16px;
+        padding: 6px;
+        margin-top: 6px;
+      }
+
+      .create-task-form .form-control:focus {
+        outline: none;
+        border-color: #188753;
+      }
+
+      .create-task-form .btn-primary {
+        background-color: #188753;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .create-task-form .btn-primary:hover {
+        background-color: #167144;
+      }
+
+      .tasks-list {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.06);
+        border: 2px solid #464C5C;
+        border-radius: 6px;
+        margin-bottom:20px;
+      }
+
+      .tasks-list h4 {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .tasks-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .tasks-list li {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+    </style>
+
+    <div class="category-details">
+      <h2>{{ category.name }}</h2>
+      <p>{{ category.description }}</p>
+    </div>
+
+    <div class="tasks-list">
+      <ul>
+        {% for task in category.task_set.all %}
+          <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
+        {% empty %}
+          <li>No tasks in this category.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="create-task-form">
+      <h3>Create New Task</h3>
+      <form method="post" action="{% url 'create_task_in_category' category.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title">Title:</label>
+          <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+          <label for="description">Description:</label>
+          <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="due_date">Due Date:</label>
+          <input type="date" class="form-control" id="due_date" name="due_date" required>
+        </div>
+        <div class="mb-3">
+          <label for="status">Status:</label>
+          <select class="form-control" id="status" name="status" required>
+            <option value="to-do">To Do</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Task</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
