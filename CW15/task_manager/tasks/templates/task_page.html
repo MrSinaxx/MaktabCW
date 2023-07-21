@@ -122,6 +122,16 @@
         margin-bottom: 50px;
       }
 
+      .delete-button {
+        background-color: #ff4d4d;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+
 
     </style>
 
@@ -131,7 +141,12 @@
         <h1>To Do</h1>
         <ul>
           {% for task in tasks_todo %}
-            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
+            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                <form method="post" action="{% url 'delete_task' task.id %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Delete</button>
+              </form>
+            </li>
           {% empty %}
             <li class="no-tasks">No tasks in this section.</li>
           {% endfor %}
@@ -141,7 +156,12 @@
         <h1>In Progress</h1>
         <ul>
           {% for task in tasks_in_progress %}
-            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
+            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                <form method="post" action="{% url 'delete_task' task.id %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Delete</button>
+              </form>
+            </li>
           {% empty %}
             <li class="no-tasks">No tasks in this section.</li>
           {% endfor %}
@@ -151,7 +171,12 @@
         <h1>Done</h1>
         <ul>
           {% for task in tasks_done %}
-            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
+            <li><a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                <form method="post" action="{% url 'delete_task' task.id %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Delete</button>
+              </form>
+            </li>
           {% empty %}
             <li class="no-tasks">No tasks in this section.</li>
           {% endfor %}

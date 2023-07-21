@@ -301,3 +301,12 @@ def delete_category(request, category_id):
         return redirect("all_categories")
     else:
         return redirect("all_categories")
+
+
+def delete_task(request, task_id):
+    if request.method == "POST":
+        task = Task.objects.get(id=task_id)
+        task.delete()
+        return redirect("task_page")
+    else:
+        return redirect("task_page")

@@ -85,6 +85,15 @@
         border-radius: 10px;
         margin-bottom: 10px;
       }
+      .delete-button {
+        background-color: #ff4d4d;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+      }
+
 
 
     </style>
@@ -103,19 +112,21 @@
               <h6 class="mb-3">Related Posts:</h6>
               <ul class="related-posts">
                 {% for task in category.task_set.all %}
-                  <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
+                  <li>
+                    <a href="{% url 'task' task.id %}">{{ task.title }}</a>
+                    <form method="post" action="{% url 'delete_task' task.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="delete-button">Delete</button>
+                    </form>
+                  </li>
                 {% endfor %}
               </ul>
-
-              <form method="post" action="{% url 'delete_category' category.id %}">
-                {% csrf_token %}
-                <button type="submit" class="delete-button">Delete</button>
-              </form>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
+
 
 
 <div class="container">
