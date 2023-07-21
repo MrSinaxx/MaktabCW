@@ -106,13 +106,13 @@ def show_pdf(request, task_id):
         return response
 
 
-def add_category(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        if name:
-            category = Category(name=name)
-            category.save()
-    return redirect("all_categories")
+# def add_category(request):
+#     if request.method == "POST":
+#         name = request.POST.get("name")
+#         if name:
+#             category = Category(name=name)
+#             category.save()
+#     return redirect("all_categories")
 
 
 def create_task(request):
@@ -204,3 +204,13 @@ def create_tag(request, task_id):
         return redirect("task", task_id=task_id)
     else:
         return redirect("task", task_id=task_id)
+
+
+def add_category(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        image = request.FILES.get("image")
+        category = Category.objects.create(name=name, image=image)
+        return redirect("categories")
+    else:
+        return render(request, "add_category.html")

@@ -79,6 +79,13 @@
       .form-button:hover {
         background-color: #188753;
       }
+      .category-image {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
 
     </style>
 
@@ -90,6 +97,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title"><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></h5>
+              <img src="{{ category.image.url }}" alt="{{ category.name }}" width="200" height="200">
               <p class="card-text">{{ category.description }}</p>
 
               <h6 class="mb-3">Related Posts:</h6>
@@ -104,13 +112,21 @@
       {% endfor %}
     </div>
 
-<div class="add-category-form">
-  <h2>Add New Category</h2>
-  <form method="post" action="{% url 'add_category' %}">
-    {% csrf_token %}
-    <label class="form-label" for="category-name">Category Name:</label>
-    <input type="text" id="category-name" name="name" class="form-input" required>
-    <button type="submit" class="form-button">Add Category</button>
-  </form>
+
+
+<div class="container">
+  <div class="add-category-form">
+    <h2>Add New Category</h2>
+    <form method="post" action="{% url 'add_category' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label class="form-label" for="category-name">Category Name:</label>
+      <input type="text" id="category-name" name="name" class="form-input" required>
+      <br>
+      <label class="form-label" for="category-image">Category Image:</label>
+      <input type="file" id="category-image" name="image" class="form-input" required>
+      <br>
+      <button type="submit" class="form-button">Add Category</button>
+    </form>
+  </div>
 </div>
 {% endblock %}

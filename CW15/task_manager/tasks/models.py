@@ -3,6 +3,9 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    image = models.ImageField(
+        upload_to="category_images/", default="category_images/Ocean_18.png"
+    )
 
     def __str__(self):
         return self.name
