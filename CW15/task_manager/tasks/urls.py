@@ -17,4 +17,5 @@ urlpatterns = [
         views.create_task_in_category,
         name="create_task_in_category",
     ),
+    path("task/<int:task_id>/create_tag/", views.create_tag, name="create_tag"),
 ]

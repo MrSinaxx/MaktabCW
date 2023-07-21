@@ -133,5 +133,16 @@
       </div>
     </div>
   </div>
+  <div class="container mt-4">
+  <h2>Create New Tag</h2>
+  <form method="post" action="{% url 'create_tag' task.id %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="tag_name" class="form-label">Tag Name:</label>
+      <input type="text" class="form-control" id="tag_name" name="tag_name" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Tag</button>
+  </form>
+</div>
   <a href="{% url 'show_pdf' task.id %}" class="btn btn-primary" target="_blank">Download PDF</a>
 {% endblock %}

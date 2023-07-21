@@ -69,9 +69,7 @@ def autocomplete_data(request):
 def show_pdf(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    doc = SimpleDocTemplate(f"{task.title}.pdf", pagesize=letter)
     styles = getSampleStyleSheet()
     story = []
 
@@ -102,11 +100,10 @@ def show_pdf(request, task_id):
 
     doc.build(story)
 
-    buffer.seek(0)
-
-    response = HttpResponse(buffer.read(), content_type="application/pdf")
-    response["Content-Disposition"] = f'inline; filename="{task.title}.pdf"'
-    return response
+    with open(f"{task.title}.pdf", "rb") as pdf_file:
+        response = HttpResponse(pdf_file.read(), content_type="application/pdf")
+        response["Content-Disposition"] = f'inline; filename="{task.title}.pdf"'
+        return response
 
 
 def add_category(request):
@@ -196,3 +193,14 @@ def create_task_in_category(request, category_id):
         return redirect("category_detail", category_id=category_id)
 
     return render(request, "create_task_in_category.html", {"category_id": category_id})
+
+
+def create_tag(request, task_id):
+    if request.method == "POST":
+        tag_name = request.POST.get("tag_name")
+        task = get_object_or_404(Task, id=task_id)
+        tag = Tag.objects.create(name=tag_name)
+        task.tags.add(tag)
+        return redirect("task", task_id=task_id)
+    else:
+        return redirect("task", task_id=task_id)
