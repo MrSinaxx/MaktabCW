@@ -30,8 +30,12 @@ def search(request):
 
 
 def task(request, task_id):
-    task = Task.objects.get(id=task_id)
-    return render(request, "task.html", {"task": task})
+    task = get_object_or_404(Task, pk=task_id)
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+    return render(
+        request, "task.html", {"task": task, "categories": categories, "tags": tags}
+    )
 
 
 def task_page(request):
@@ -235,3 +239,39 @@ def update_category(request, category_id):
         return redirect("category_detail", category_id=category_id)
 
     return render(request, "category_detail.html", {"category": category})
+
+
+def update_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        due_date = request.POST.get("due_date")
+        status = request.POST.get("status")
+        category_id = request.POST.get("category")
+        tags_ids = request.POST.getlist("tags")
+
+        category = Category.objects.get(id=category_id)
+        tags = Tag.objects.filter(id__in=tags_ids)
+
+        task.title = title
+        task.description = description
+        task.due_date = due_date
+        task.status = status
+        task.category = category
+        task.tags.set(tags)
+
+        if request.FILES.get("files"):
+            task.files = request.FILES["files"]
+
+        task.save()
+
+        return redirect("task", task_id)
+
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+
+    return render(
+        request, "task.html", {"task": task, "categories": categories, "tags": tags}
+    )
