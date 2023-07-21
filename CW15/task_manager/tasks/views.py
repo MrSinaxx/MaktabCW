@@ -292,3 +292,12 @@ def update_tag(request, tag_id):
         return redirect("tag_detail", tag_id=tag_id)
     else:
         return render(request, "tag_detail.html", {"tag": tag})
+
+
+def delete_category(request, category_id):
+    if request.method == "POST":
+        category = Category.objects.get(id=category_id)
+        category.delete()
+        return redirect("all_categories")
+    else:
+        return redirect("all_categories")

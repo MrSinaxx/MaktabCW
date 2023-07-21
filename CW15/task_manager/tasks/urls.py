@@ -28,6 +28,11 @@ urlpatterns = [
     path("task/<int:task_id>/update/", views.update_task, name="update_task"),
     path("tag/<int:tag_id>/", views.tag_detail, name="tag_detail"),
     path("tag/<int:tag_id>/update/", views.update_tag, name="update_tag"),
+    path(
+        "delete_category/<int:category_id>/",
+        views.delete_category,
+        name="delete_category",
+    ),
 ]
 
 

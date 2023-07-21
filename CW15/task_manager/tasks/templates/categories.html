@@ -106,12 +106,16 @@
                   <li><a href="{% url 'task' task.id %}">{{ task.title }}</a></li>
                 {% endfor %}
               </ul>
+
+              <form method="post" action="{% url 'delete_category' category.id %}">
+                {% csrf_token %}
+                <button type="submit" class="delete-button">Delete</button>
+              </form>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
-
 
 
 <div class="container">
