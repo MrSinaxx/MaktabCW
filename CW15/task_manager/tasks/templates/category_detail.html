@@ -96,11 +96,24 @@
         font-size: 16px;
         margin-bottom: 5px;
       }
+
+      .category-image {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+
     </style>
 
     <div class="category-details">
       <h2>{{ category.name }}</h2>
       <p>{{ category.description }}</p>
+      {% if category.image %}
+        <img src="{{ category.image.url }}" class="category-image" alt="{{ category.name }}">
+      {% else %}
+        <p>No image available for this category.</p>
+      {% endif %}
     </div>
 
     <div class="tasks-list">
@@ -143,4 +156,21 @@
       </form>
     </div>
   </div>
+
+  <div class="create-category-form">
+  <h3>Update Category</h3>
+  <form method="post" action="{% url 'update_category' category.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="update-category-name">Category Name:</label>
+      <input type="text" class="form-control" id="update-category-name" name="name" value="{{ category.name }}">
+    </div>
+    <div class="mb-3">
+      <label for="update-category-image">Category Image:</label>
+      <input type="file" id="update-category-image" name="image" class="form-input">
+    </div>
+    <button type="submit" class="btn btn-primary">Update Category</button>
+  </form>
+</div>
+
 {% endblock %}

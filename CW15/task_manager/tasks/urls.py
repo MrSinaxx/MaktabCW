@@ -20,6 +20,11 @@ urlpatterns = [
         name="create_task_in_category",
     ),
     path("task/<int:task_id>/create_tag/", views.create_tag, name="create_tag"),
+    path(
+        "category_detail/<int:category_id>/update/",
+        views.update_category,
+        name="update_category",
+    ),
 ]
 
 

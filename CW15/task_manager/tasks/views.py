@@ -214,3 +214,22 @@ def add_category(request):
         return redirect("categories")
     else:
         return render(request, "add_category.html")
+
+
+def update_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        image = request.FILES.get("image")
+
+        category.name = name
+
+        if image:
+            category.image = image
+
+        category.save()
+
+        return redirect("category_detail", category_id=category_id)
+
+    return render(request, "category_detail.html", {"category": category})
