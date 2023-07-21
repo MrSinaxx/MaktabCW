@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Tag Detail: {{ tag.name }}</h1>
+    <div class="tag-details">
+      <h2>{{ tag.name }}</h2>
+    </div>
+
+    <div class="update-tag-form">
+      <h3>Update Tag</h3>
+      <form method="post" action="{% url 'update_tag' tag.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="update-tag-name">Tag Name:</label>
+          <input type="text" class="form-control" id="update-tag-name" name="name" value="{{ tag.name }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Tag</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

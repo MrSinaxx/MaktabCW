@@ -275,3 +275,20 @@ def update_task(request, task_id):
     return render(
         request, "task.html", {"task": task, "categories": categories, "tags": tags}
     )
+
+
+def tag_detail(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
+    return render(request, "tag_detail.html", {"tag": tag})
+
+
+def update_tag(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        tag.name = name
+        tag.save()
+        return redirect("tag_detail", tag_id=tag_id)
+    else:
+        return render(request, "tag_detail.html", {"tag": tag})

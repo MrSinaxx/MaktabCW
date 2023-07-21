@@ -129,7 +129,11 @@
         <p class="card-text"><strong>Due Date:</strong> {{ task.due_date }}</p>
         <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
         <p class="card-text"><strong>Category:</strong> {{ task.category.name }}</p>
-        <p class="card-text"><strong>Tags:</strong> {% for tag in task.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+        <p class="card-text"><strong>Tags:</strong>
+          {% for tag in task.tags.all %}
+            <a href="{% url 'tag_detail' tag.id %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
       </div>
     </div>
   </div>
