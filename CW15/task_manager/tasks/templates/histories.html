@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-3">
+    <h2>Activity History</h2>
+    {% if activities %}
+      <ul>
+        {% for activity in activities %}
+          <li>{{ activity }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No activities yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

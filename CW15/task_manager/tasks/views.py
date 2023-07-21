@@ -142,6 +142,8 @@ def create_task(request):
         )
         task.tags.set(tags)
 
+        set_history_cookie(request, "Task Created")
+
         return redirect("task_page")
     else:
         return redirect("task_page")
@@ -217,6 +219,7 @@ def add_category(request):
         name = request.POST.get("name")
         image = request.FILES.get("image")
         category = Category.objects.create(name=name, image=image)
+        set_history_cookie(request, "Category Created")
         return redirect("categories")
     else:
         return render(request, "add_category.html")
@@ -235,6 +238,7 @@ def update_category(request, category_id):
             category.image = image
 
         category.save()
+        set_history_cookie(request, "Category Updated")
 
         return redirect("category_detail", category_id=category_id)
 
@@ -266,6 +270,7 @@ def update_task(request, task_id):
             task.files = request.FILES["files"]
 
         task.save()
+        set_history_cookie(request, "Task Updated")
 
         return redirect("task", task_id)
 
@@ -298,6 +303,7 @@ def delete_category(request, category_id):
     if request.method == "POST":
         category = Category.objects.get(id=category_id)
         category.delete()
+        set_history_cookie(request, "Category Deleted")
         return redirect("all_categories")
     else:
         return redirect("all_categories")
@@ -307,6 +313,23 @@ def delete_task(request, task_id):
     if request.method == "POST":
         task = Task.objects.get(id=task_id)
         task.delete()
+        set_history_cookie(request, "Task Deleted")
+
         return redirect("task_page")
     else:
         return redirect("task_page")
+
+
+def set_history_cookie(request, activity):
+    history = request.COOKIES.get("history", "")
+    history += f"{activity},"
+    print(request.COOKIES)
+    response = render(request, "histories.html", {})
+    response.set_cookie("history", history)
+    return response
+
+
+def histories(request):
+    history = request.COOKIES.get("history", "")
+    activities = history.split(",") if history else []
+    return render(request, "histories.html", {"activities": activities})
