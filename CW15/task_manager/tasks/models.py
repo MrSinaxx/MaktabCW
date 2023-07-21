@@ -30,6 +30,7 @@ class Task(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag)
+    files = models.FileField(upload_to="task_files/", blank=True, null=True)
 
     def __str__(self):
         return self.title

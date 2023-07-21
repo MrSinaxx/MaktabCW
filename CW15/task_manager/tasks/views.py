@@ -123,6 +123,7 @@ def create_task(request):
         status = request.POST.get("status")
         category_id = request.POST.get("category")
         tags_ids = request.POST.getlist("tags")
+        files = request.FILES.get("files")
 
         category = Category.objects.get(id=category_id)
         tags = Tag.objects.filter(id__in=tags_ids)
@@ -133,6 +134,7 @@ def create_task(request):
             due_date=due_date,
             status=status,
             category=category,
+            files=files,
         )
         task.tags.set(tags)
 
