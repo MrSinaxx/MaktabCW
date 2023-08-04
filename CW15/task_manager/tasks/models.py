@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User
 
 
 class Category(models.Model):
@@ -6,6 +7,7 @@ class Category(models.Model):
     image = models.ImageField(
         upload_to="category_images/", default="category_images/Ocean_18.png"
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return self.name
@@ -13,6 +15,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return self.name
@@ -31,6 +34,7 @@ class Task(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag)
     files = models.FileField(upload_to="task_files/", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return self.title
