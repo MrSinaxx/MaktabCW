@@ -7,7 +7,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from io import BytesIO
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -150,21 +150,23 @@ def create_task(request):
         category = Category.objects.get(id=category_id)
         tags = Tag.objects.filter(id__in=tags_ids)
 
-        task = Task.objects.create(
-            title=title,
-            description=description,
-            due_date=due_date,
-            status=status,
-            category=category,
-            files=files,
-        )
-        task.tags.set(tags)
+        if request.user.is_authenticated:
+            task = Task.objects.create(
+                title=title,
+                description=description,
+                due_date=due_date,
+                status=status,
+                category=category,
+                files=files,
+                user=request.user,
+            )
+            task.tags.set(tags)
 
-        set_history_cookie(request, "Task Created")
+            set_history_cookie(request, "Task Created")
 
-        return redirect("task_page")
-    else:
-        return redirect("task_page")
+            return redirect("task_page")
+
+    return redirect("task_page")
 
 
 def category_detail(request, category_id):
