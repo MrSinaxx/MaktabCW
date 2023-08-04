@@ -69,7 +69,13 @@ def task_page(request):
 
 
 def all_categories(request):
-    categories = Category.objects.all()
+    user = request.user
+
+    if user.is_authenticated:
+        categories = Category.objects.filter(user=user)
+    else:
+        categories = Category.objects.all()
+
     return render(request, "categories.html", {"categories": categories})
 
 
