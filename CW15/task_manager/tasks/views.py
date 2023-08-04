@@ -44,9 +44,16 @@ def task(request, task_id):
 
 
 def task_page(request):
-    tasks_todo = Task.objects.filter(status="to-do")
-    tasks_in_progress = Task.objects.filter(status="in-progress")
-    tasks_done = Task.objects.filter(status="done")
+    user = request.user
+
+    if user.is_authenticated:
+        tasks_todo = Task.objects.filter(status="to-do", user=user)
+        tasks_in_progress = Task.objects.filter(status="in-progress", user=user)
+        tasks_done = Task.objects.filter(status="done", user=user)
+    else:
+        tasks_todo = Task.objects.filter(status="to-do")
+        tasks_in_progress = Task.objects.filter(status="in-progress")
+        tasks_done = Task.objects.filter(status="done")
 
     categories = Category.objects.all()
     tags = Tag.objects.all()
