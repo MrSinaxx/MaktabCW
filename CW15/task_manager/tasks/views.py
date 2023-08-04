@@ -11,7 +11,12 @@ from io import BytesIO
 
 
 def home(request):
-    tasks = Task.objects.all()
+    if request.user.is_authenticated:
+        user = request.user
+        tasks = Task.objects.filter(user=user)
+    else:
+        tasks = Task.objects.all()
+
     paginator = Paginator(tasks, 12)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
