@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}{% endblock %}
+{% block title %}Todo List{% endblock %}
 
 {% block content %}
     <div class="card">
-        {{ todos }}
+        {% for todo in todos %}
+            <p>{{ todo.title }}</p>
+            <p>{{ todo.description }}</p>
+            <hr>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -11,7 +11,7 @@ class IndexView(View):
 
 class TodoListView(View):
     def get(self, request):
-        todos = Todo.objects.all()
+        todos = Todo.objects.filter(user=request.user)
         return render(request, "Home/todo_list.html", {"todos": todos})
 
 
