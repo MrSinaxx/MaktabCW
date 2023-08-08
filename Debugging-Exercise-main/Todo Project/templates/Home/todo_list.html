@@ -4,7 +4,7 @@
 {% block content %}
     <div class="card">
         {% for todo in todos %}
-            <p>{{ todo.title }}</p>
+            <p><a href="{% url 'todo_detail' todo.pk %}">{{ todo.title }}</a></p>
             <p>{{ todo.description }}</p>
             <hr>
         {% endfor %}
