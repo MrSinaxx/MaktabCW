@@ -1,3 +1,4 @@
+from asyncio import mixins
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import Task, Category, Tag
@@ -8,6 +9,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from .mixin import TodoOwnerRequiredMixin
 
 
 def home(request):
@@ -265,10 +268,19 @@ def update_category(request, category_id):
     return render(request, "category_detail.html", {"category": category})
 
 
-def update_task(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
+class UpdateTaskView(TodoOwnerRequiredMixin, View):
+    def get(self, request, task_id):
+        task = self.get_task()
+        task = get_object_or_404(Task, id=task_id)
+        categories = Category.objects.all()
+        tags = Tag.objects.all()
+        return render(
+            request, "task.html", {"task": task, "categories": categories, "tags": tags}
+        )
 
-    if request.method == "POST":
+    def post(self, request, task_id):
+        task = get_object_or_404(Task, id=task_id)
+
         title = request.POST.get("title")
         description = request.POST.get("description")
         due_date = request.POST.get("due_date")
@@ -290,16 +302,14 @@ def update_task(request, task_id):
             task.files = request.FILES["files"]
 
         task.save()
-        set_history_cookie(request, "Task Updated")
+        self.set_history_cookie(request, "Task Updated")
 
         return redirect("task", task_id)
 
-    categories = Category.objects.all()
-    tags = Tag.objects.all()
-
-    return render(
-        request, "task.html", {"task": task, "categories": categories, "tags": tags}
-    )
+    def set_history_cookie(self, request, message):
+        response = HttpResponse()
+        response.set_cookie("history", message)
+        return response
 
 
 def tag_detail(request, tag_id):
