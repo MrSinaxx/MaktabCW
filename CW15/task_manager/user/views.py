@@ -1,7 +1,11 @@
 from django.shortcuts import render
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .mixin import ProfileMixin
+from django.views import View
+from django.urls import reverse
+from .models import User
 
 
 def register_user(request):
@@ -33,3 +37,23 @@ def login_user(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+
+class ProfileView(ProfileMixin, View):
+    template_name = "profile.html"
+
+    def get_user(self):
+        return self.request.user
+
+    def get(self, request):
+        form = CustomUserCreationForm(instance=request.user)
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = CustomUserCreationForm(
+            request.POST, request.FILES, instance=request.user
+        )
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+        return render(request, self.template_name, {"form": form})
