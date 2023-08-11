@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Text</title>
+</head>
+
+<body>
+    <button onclick="displayText()">Click Me!</button>
+    <div id="textElement" style="display: none;">SOME CHANG!!!!!</div>
+
+    <script>
+        function displayText() {
+            const element = document.getElementById('textElement');
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

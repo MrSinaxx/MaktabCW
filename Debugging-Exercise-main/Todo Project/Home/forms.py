@@ -2,8 +2,7 @@ from django import forms
 from .models import Todo
 
 
-class TodoForm(forms.Form):
+class TodoForm(forms.ModelForm):  # Inherit from ModelForm
     class Meta:
         model = Todo
-        fields = ['user', 'title', 'description', 'is_completed']
-
+        fields = ["title", "description", "is_completed"]  # Removed 'user'

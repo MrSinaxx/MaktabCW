@@ -14,3 +14,25 @@ class ProfileMixin(LoginRequiredMixin):
         raise NotImplementedError(
             "Define get_user in the view to retrieve the user instance."
         )
+
+
+from django.shortcuts import get_object_or_404
+
+
+class ObjectGetUpdateMixin:
+    model = None
+    form_class = None
+
+    def get_object(self, *args, **kwargs):
+        obj_id = self.kwargs.get("id")
+        if not obj_id or not self.model:
+            raise ValueError("Model not defined or ID not provided.")
+        return get_object_or_404(self.model, id=obj_id)
+
+    def update_object(self, request):
+        obj = self.get_object()
+        form = self.form_class(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            return True, form
+        return False, form
