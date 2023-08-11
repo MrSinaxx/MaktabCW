@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Login with Remember Me</title>
+</head>
+
+<body>
+    <input type="text" id="username" placeholder="Username" value="">
+    <input type="password" id="password" placeholder="Password">
+    <input type="checkbox" id="rememberMe">
+    <label for="rememberMe">Remember me</label>
+    <button onclick="loginUser()">Login</button>
+
+    <script>
+        document.getElementById("username").value = getCookie("username");
+
+        function loginUser() {
+            const username = document.getElementById("username").value;
+            if (document.getElementById("rememberMe").checked) {
+                document.cookie = "username=" + username + "; max-age=2592000";
+            }
+            alert('Logged in as ' + username);
+        }
+
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+    </script>
+</body>
+
+</html>
