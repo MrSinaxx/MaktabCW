@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Classifier</title>
+</head>
+
+<body>
+    <input type="number" id="ageInput" placeholder="Enter your age">
+    <button onclick="classifyAge()">Classify Age</button>
+
+    <script>
+        function classifyAge() {
+            const age = parseInt(document.getElementById("ageInput").value, 10);
+
+            if (age >= 0 && age <= 10) {
+                console.log("child");
+            } else if (age >= 11 && age <= 18) {
+                console.log("teenager");
+            } else if (age >= 19 && age <= 30) {
+                console.log("young person");
+            } else if (age > 30) {
+                console.log("adult");
+            } else {
+                console.log("Invalid age entered.");
+            }
+        }
+    </script>
+</body>
+
+</html>
