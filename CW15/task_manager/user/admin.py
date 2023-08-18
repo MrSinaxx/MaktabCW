@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import User
 from django.db.models import Count
 from django.contrib.admin import SimpleListFilter
+from django.utils.html import format_html
 
 
 class GreatUserFilter(SimpleListFilter):
@@ -37,6 +38,13 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ["is_active", "is_staff"]
     search_fields = ["username", "email"]
     list_filter = ["is_active", "is_staff", GreatUserFilter]
+
+    readonly_fields = ["image_display"]
+
+    def image_display(self, obj):
+        return format_html('<img src="{}" width="150" height="150" />', obj.image.url)
+
+    image_display.short_description = "User Image"
 
     def number_of_tasks(self, obj):
         return obj.number_of_tasks()
