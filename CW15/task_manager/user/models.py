@@ -23,5 +23,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["email"]
 
+    def number_of_tasks(self):
+        return self.task_set.count()
+
     def __str__(self):
         return self.username
