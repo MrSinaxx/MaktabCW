@@ -26,5 +26,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def number_of_tasks(self):
         return self.task_set.count()
 
+    def is_great_user(self):
+        return self.number_of_tasks() > 10
+
     def __str__(self):
         return self.username
